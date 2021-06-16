@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -77,7 +78,7 @@ public class ImagePickAdapter extends BaseAdapter<ImageFile, ImagePickAdapter.Im
         if (isNeedCamera && position == 0) {
             holder.mIvCamera.setVisibility(View.VISIBLE);
             holder.mIvThumbnail.setVisibility(View.INVISIBLE);
-            holder.mCbx.setVisibility(View.INVISIBLE);
+            holder.mCbx.setVisibility(View.GONE);
             holder.mShadow.setVisibility(View.INVISIBLE);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -103,7 +104,7 @@ public class ImagePickAdapter extends BaseAdapter<ImageFile, ImagePickAdapter.Im
         } else {
             holder.mIvCamera.setVisibility(View.INVISIBLE);
             holder.mIvThumbnail.setVisibility(View.VISIBLE);
-            holder.mCbx.setVisibility(View.VISIBLE);
+            holder.mCbx.setVisibility(View.GONE);
 
             ImageFile file;
             if (isNeedCamera) {
@@ -150,24 +151,24 @@ public class ImagePickAdapter extends BaseAdapter<ImageFile, ImagePickAdapter.Im
                     }
 
                     if (mListener != null) {
-                        mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index));
+                        mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index),holder.animation);
                     }
                 }
             });
 
-            if (isNeedImagePager) {
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(mContext, ImageBrowserActivity.class);
-                        intent.putExtra(Constant.MAX_NUMBER, mMaxNumber);
-                        intent.putExtra(IMAGE_BROWSER_INIT_INDEX,
-                                isNeedCamera ? holder.getAdapterPosition() - 1 : holder.getAdapterPosition());
-                        intent.putParcelableArrayListExtra(IMAGE_BROWSER_SELECTED_LIST, ((ImagePickActivity) mContext).mSelectedList);
-                        ((Activity) mContext).startActivityForResult(intent, Constant.REQUEST_CODE_BROWSER_IMAGE);
-                    }
-                });
-            } else {
+//            if (isNeedImagePager) {
+//                holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Intent intent = new Intent(mContext, ImageBrowserActivity.class);
+//                        intent.putExtra(Constant.MAX_NUMBER, mMaxNumber);
+//                        intent.putExtra(IMAGE_BROWSER_INIT_INDEX,
+//                                isNeedCamera ? holder.getAdapterPosition() - 1 : holder.getAdapterPosition());
+//                        intent.putParcelableArrayListExtra(IMAGE_BROWSER_SELECTED_LIST, ((ImagePickActivity) mContext).mSelectedList);
+//                        ((Activity) mContext).startActivityForResult(intent, Constant.REQUEST_CODE_BROWSER_IMAGE);
+//                    }
+//                });
+//            } else {
                 holder.mIvThumbnail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -190,11 +191,64 @@ public class ImagePickAdapter extends BaseAdapter<ImageFile, ImagePickAdapter.Im
                         }
 
                         if (mListener != null) {
-                            mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index));
+                            mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index), holder.animation);
                         }
                     }
                 });
-            }
+                holder.itemView.setOnLongClickListener ( new View.OnLongClickListener ( ) {
+                    @Override
+                    public boolean onLongClick ( View view ) {
+                        if (!holder.mCbx.isSelected() && isUpToMax()) {
+                            ToastUtil.getInstance(mContext).showToast(R.string.vw_up_to_max);
+                            return true;
+                        }
+
+                        int index = isNeedCamera ? holder.getAdapterPosition() - 1 : holder.getAdapterPosition();
+                        if (holder.mCbx.isSelected()) {
+                            holder.mShadow.setVisibility(View.INVISIBLE);
+                            holder.mCbx.setSelected(false);
+                            mCurrentNumber--;
+                            mList.get(index).setSelected(false);
+                        } else {
+                            holder.mShadow.setVisibility(View.VISIBLE);
+                            holder.mCbx.setSelected(true);
+                            mCurrentNumber++;
+                            mList.get(index).setSelected(true);
+                        }
+
+                        if (mListener != null) {
+                            mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index), holder.animation);
+                        }                        return false;
+                    }
+                } );
+                holder.animation.setOnClickListener ( new View.OnClickListener ( ) {
+                    @Override
+                    public void onClick ( View view ) {
+                        if (!holder.mCbx.isSelected() && isUpToMax()) {
+                            ToastUtil.getInstance(mContext).showToast(R.string.vw_up_to_max);
+                            return;
+                        }
+
+                        if (holder.mCbx.isSelected()) {
+                            holder.mShadow.setVisibility(View.INVISIBLE);
+                            holder.mCbx.setSelected(false);
+                            mCurrentNumber--;
+                        } else {
+                            holder.mShadow.setVisibility(View.VISIBLE);
+                            holder.mCbx.setSelected(true);
+                            mCurrentNumber++;
+                        }
+
+                        int index = isNeedCamera ? holder.getAdapterPosition() - 1 : holder.getAdapterPosition();
+                        mList.get(index).setSelected(holder.mCbx.isSelected());
+
+                        if (mListener != null) {
+                            mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index),holder.animation);
+                        }
+                    }
+                } );
+
+//            }
         }
     }
 
@@ -208,13 +262,14 @@ public class ImagePickAdapter extends BaseAdapter<ImageFile, ImagePickAdapter.Im
         private ImageView mIvThumbnail;
         private View mShadow;
         private ImageView mCbx;
-
+        private RelativeLayout animation;
         public ImagePickViewHolder(View itemView) {
             super(itemView);
             mIvCamera = (ImageView) itemView.findViewById(R.id.iv_camera);
             mIvThumbnail = (ImageView) itemView.findViewById(R.id.iv_thumbnail);
             mShadow = itemView.findViewById(R.id.shadow);
             mCbx = (ImageView) itemView.findViewById(R.id.cbx);
+            animation = itemView.findViewById ( R.id.animationSquare );
         }
     }
 

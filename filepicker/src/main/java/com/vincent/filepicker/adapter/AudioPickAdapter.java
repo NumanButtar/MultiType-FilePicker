@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.vincent.filepicker.R;
@@ -64,8 +65,8 @@ public class AudioPickAdapter extends BaseAdapter<AudioFile, AudioPickAdapter.Au
         } else {
             holder.mCbx.setSelected(false);
         }
-
-        holder.mCbx.setOnClickListener(new View.OnClickListener() {
+        //change itemview to mCbx
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!v.isSelected() && isUpToMax()) {
@@ -84,31 +85,31 @@ public class AudioPickAdapter extends BaseAdapter<AudioFile, AudioPickAdapter.Au
                 mList.get(holder.getAdapterPosition()).setSelected(holder.mCbx.isSelected());
 
                 if (mListener != null) {
-                    mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(holder.getAdapterPosition()));
+                    mListener.onAudioStateChanged (holder.mCbx.isSelected(), mList.get(holder.getAdapterPosition()),holder.animation);
                 }
             }
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    File f = new File(file.getPath());
-                    uri = FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".provider", f);
-                }else{
-                    uri = Uri.parse("file://" + file.getPath());
-                }
-                intent.setDataAndType(uri, "audio/mp3");
-                if (Util.detectIntent(mContext, intent)) {
-                    mContext.startActivity(intent);
-                } else {
-                    ToastUtil.getInstance(mContext).showToast(mContext.getString(R.string.vw_no_audio_play_app));
-                }
-            }
-        });
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                Uri uri;
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                    File f = new File(file.getPath());
+//                    uri = FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".provider", f);
+//                }else{
+//                    uri = Uri.parse("file://" + file.getPath());
+//                }
+//                intent.setDataAndType(uri, "audio/mp3");
+//                if (Util.detectIntent(mContext, intent)) {
+//                    mContext.startActivity(intent);
+//                } else {
+//                    ToastUtil.getInstance(mContext).showToast(mContext.getString(R.string.vw_no_audio_play_app));
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -120,12 +121,13 @@ public class AudioPickAdapter extends BaseAdapter<AudioFile, AudioPickAdapter.Au
         private TextView mTvTitle;
         private TextView mTvDuration;
         private ImageView mCbx;
-
+        private RelativeLayout animation;
         public AudioPickViewHolder(View itemView) {
             super(itemView);
             mTvTitle = (TextView) itemView.findViewById(R.id.tv_audio_title);
             mTvDuration = (TextView) itemView.findViewById(R.id.tv_duration);
             mCbx = (ImageView) itemView.findViewById(R.id.cbx);
+            animation = itemView.findViewById ( R.id.animationAudio );
         }
     }
 

@@ -12,6 +12,7 @@
         android:background="@color/vw_BgToolBar"
         android:theme="@style/vw_ToolbarTheme"
         app:titleTextColor="#FFFFFF"
+
         app:navigationIcon="@drawable/vw_ic_back" />
 
     <RelativeLayout

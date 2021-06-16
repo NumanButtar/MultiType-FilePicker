@@ -8,6 +8,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -85,19 +87,35 @@ public class VideoPickActivity extends BaseActivity {
         mAdapter = new VideoPickAdapter(this, isNeedCamera, mMaxNumber);
         mRecyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnSelectStateListener(new OnSelectStateListener<VideoFile>() {
+        mAdapter.setOnSelectStateListener (new OnSelectStateListener<VideoFile>() {
+
             @Override
-            public void OnSelectStateChanged(boolean state, VideoFile file) {
+            public void OnSelectStateChanged ( boolean state , VideoFile file , View animation ) {
                 if (state) {
                     mSelectedList.add(file);
                     mCurrentNumber++;
+                    animation.setAlpha ( 1f );
+
+                    Animation a= AnimationUtils.loadAnimation ( getApplicationContext (),R.anim.rotate_animation );
+                    animation.startAnimation ( a );
                 } else {
                     mSelectedList.remove(file);
                     mCurrentNumber--;
+                    animation.setAlpha ( 0f );
                 }
                 tv_count.setText(mCurrentNumber + "/" + mMaxNumber);
             }
-        });
+
+            @Override
+            public void onAudioStateChanged ( boolean state , VideoFile file,View animation ) {
+
+            }
+
+            @Override
+            public void onFileStateChanged ( boolean state , VideoFile file,View animation ) {
+
+            }
+        } );
 
         mProgressBar = (ProgressBar) findViewById(R.id.pb_video_pick);
         File folder = new File(getExternalCacheDir().getAbsolutePath() + File.separator + THUMBNAIL_PATH);

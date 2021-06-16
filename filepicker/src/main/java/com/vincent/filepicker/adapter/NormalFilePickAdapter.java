@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.vincent.filepicker.R;
@@ -73,7 +74,8 @@ public class NormalFilePickAdapter extends BaseAdapter<NormalFile, NormalFilePic
             holder.mIvIcon.setImageResource(R.drawable.vw_ic_file);
         }
 
-        holder.mCbx.setOnClickListener(new View.OnClickListener() {
+        //change itemview to mCbx
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!v.isSelected() && isUpToMax()) {
@@ -92,7 +94,7 @@ public class NormalFilePickAdapter extends BaseAdapter<NormalFile, NormalFilePic
                 mList.get(holder.getAdapterPosition()).setSelected(holder.mCbx.isSelected());
 
                 if (mListener != null) {
-                    mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(holder.getAdapterPosition()));
+                    mListener.onFileStateChanged (holder.mCbx.isSelected(), mList.get(holder.getAdapterPosition()),holder.animation);
                 }
             }
         });
@@ -121,12 +123,13 @@ public class NormalFilePickAdapter extends BaseAdapter<NormalFile, NormalFilePic
         private ImageView mIvIcon;
         private TextView mTvTitle;
         private ImageView mCbx;
-
+        private RelativeLayout animation;
         public NormalFilePickViewHolder(View itemView) {
             super(itemView);
             mIvIcon = (ImageView) itemView.findViewById(R.id.ic_file);
             mTvTitle = (TextView) itemView.findViewById(R.id.tv_file_title);
             mCbx = (ImageView) itemView.findViewById(R.id.cbx);
+            animation = itemView.findViewById ( R.id.animationFile );
         }
     }
 

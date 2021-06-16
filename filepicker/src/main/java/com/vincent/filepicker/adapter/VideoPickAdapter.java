@@ -103,7 +103,7 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
         } else {
             holder.mIvCamera.setVisibility(View.INVISIBLE);
             holder.mIvThumbnail.setVisibility(View.VISIBLE);
-            holder.mCbx.setVisibility(View.VISIBLE);
+            holder.mCbx.setVisibility(View.INVISIBLE);
             holder.mDurationLayout.setVisibility(View.VISIBLE);
 
             final VideoFile file;
@@ -151,7 +151,7 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
                     mList.get(index).setSelected(holder.mCbx.isSelected());
 
                     if (mListener != null) {
-                        mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index));
+                        mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index),holder.animation);
                     }
                 }
             });
@@ -176,7 +176,59 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
                     }
                 }
             });
+            holder.itemView.setOnLongClickListener ( new View.OnLongClickListener ( ) {
+                @Override
+                public boolean onLongClick ( View view ) {
+                    if (!holder.mCbx.isSelected() && isUpToMax()) {
+                        ToastUtil.getInstance(mContext).showToast(R.string.vw_up_to_max);
+                        return true;
+                    }
 
+                    if (holder.mCbx.isSelected()) {
+                        holder.mShadow.setVisibility(View.INVISIBLE);
+                        holder.mCbx.setSelected(false);
+                        mCurrentNumber--;
+                    } else {
+                        holder.mShadow.setVisibility(View.VISIBLE);
+                        holder.mCbx.setSelected(true);
+                        mCurrentNumber++;
+                    }
+
+                    int index = isNeedCamera ? holder.getAdapterPosition() - 1 : holder.getAdapterPosition();
+                    mList.get(index).setSelected(holder.mCbx.isSelected());
+
+                    if (mListener != null) {
+                        mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index),holder.animation);
+                    }
+                    return false;
+                }
+            } );
+            holder.animation.setOnClickListener ( new View.OnClickListener ( ) {
+                @Override
+                public void onClick ( View view ) {
+                    if (!holder.mCbx.isSelected() && isUpToMax()) {
+                        ToastUtil.getInstance(mContext).showToast(R.string.vw_up_to_max);
+                        return;
+                    }
+
+                    if (holder.mCbx.isSelected()) {
+                        holder.mShadow.setVisibility(View.INVISIBLE);
+                        holder.mCbx.setSelected(false);
+                        mCurrentNumber--;
+                    } else {
+                        holder.mShadow.setVisibility(View.VISIBLE);
+                        holder.mCbx.setSelected(true);
+                        mCurrentNumber++;
+                    }
+
+                    int index = isNeedCamera ? holder.getAdapterPosition() - 1 : holder.getAdapterPosition();
+                    mList.get(index).setSelected(holder.mCbx.isSelected());
+
+                    if (mListener != null) {
+                        mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index),holder.animation);
+                    }
+                }
+            } );
             holder.mDuration.setText(Util.getDurationString(file.getDuration()));
         }
     }
@@ -193,7 +245,7 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
         private ImageView mCbx;
         private TextView mDuration;
         private RelativeLayout mDurationLayout;
-
+        private RelativeLayout animation;
         public VideoPickViewHolder(View itemView) {
             super(itemView);
             mIvCamera = (ImageView) itemView.findViewById(R.id.iv_camera);
@@ -201,6 +253,7 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
             mShadow = itemView.findViewById(R.id.shadow);
             mCbx = (ImageView) itemView.findViewById(R.id.cbx);
             mDuration = (TextView) itemView.findViewById(R.id.txt_duration);
+            animation = itemView.findViewById ( R.id.animationSquarevideo );
             mDurationLayout = (RelativeLayout) itemView.findViewById(R.id.layout_duration);
         }
     }

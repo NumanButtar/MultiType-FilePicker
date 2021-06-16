@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -87,16 +89,31 @@ public class AudioPickActivity extends BaseActivity {
 
         mAdapter.setOnSelectStateListener(new OnSelectStateListener<AudioFile>() {
             @Override
-            public void OnSelectStateChanged(boolean state, AudioFile file) {
+            public void OnSelectStateChanged ( boolean state , AudioFile file , View animation ) {
+
+            }
+
+            @Override
+            public void onAudioStateChanged ( boolean state , AudioFile file,View animation ) {
                 if (state) {
                     mSelectedList.add(file);
                     mCurrentNumber++;
+                    animation.setAlpha ( 1f );
+                    Animation a = AnimationUtils.loadAnimation ( getApplicationContext (),R.anim.rotate_animation );
+                    animation.startAnimation ( a );
                 } else {
+                    animation.setAlpha ( 0f );
                     mSelectedList.remove(file);
                     mCurrentNumber--;
                 }
                 tv_count.setText(mCurrentNumber + "/" + mMaxNumber);
             }
+
+            @Override
+            public void onFileStateChanged ( boolean state , AudioFile file,View animation ) {
+
+            }
+
         });
 
         rl_done = (RelativeLayout) findViewById(R.id.rl_done);

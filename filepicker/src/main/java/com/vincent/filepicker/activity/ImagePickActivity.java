@@ -7,6 +7,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -83,19 +85,37 @@ public class ImagePickActivity extends BaseActivity {
         mAdapter = new ImagePickAdapter(this, isNeedCamera, isNeedImagePager, mMaxNumber);
         mRecyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnSelectStateListener(new OnSelectStateListener<ImageFile>() {
+        mAdapter.setOnSelectStateListener (new OnSelectStateListener<ImageFile>() {
+
+
             @Override
-            public void OnSelectStateChanged(boolean state, ImageFile file) {
+            public void OnSelectStateChanged ( boolean state , ImageFile file , View animation ) {
                 if (state) {
                     mSelectedList.add(file);
                     mCurrentNumber++;
+                    animation.setAlpha ( 1f );
+
+                    Animation a= AnimationUtils.loadAnimation ( getApplicationContext (),R.anim.rotate_animation );
+                    animation.startAnimation ( a );
                 } else {
                     mSelectedList.remove(file);
                     mCurrentNumber--;
+                    animation.setAlpha ( 0f );
+//                    animation.setVisibility ( View.GONE );
                 }
                 tv_count.setText(mCurrentNumber + "/" + mMaxNumber);
             }
-        });
+
+            @Override
+            public void onAudioStateChanged ( boolean state , ImageFile file,View animation ) {
+
+            }
+
+            @Override
+            public void onFileStateChanged ( boolean state , ImageFile file,View animation ) {
+
+            }
+        } );
 
         rl_done = (RelativeLayout) findViewById(R.id.rl_done);
         rl_done.setOnClickListener(new View.OnClickListener() {
