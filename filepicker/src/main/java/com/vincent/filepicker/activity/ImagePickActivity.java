@@ -1,6 +1,7 @@
 package com.vincent.filepicker.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -74,6 +76,17 @@ public class ImagePickActivity extends BaseActivity {
         initView();
     }
 
+    private void animateView (View ImageView ) {
+//        when (val drawable = view.drawable) {
+//            is AnimatedVectorDrawableCompat -> {
+//                drawable.start()
+//            }
+//            is AnimatedVectorDrawable -> {
+//                drawable.start()
+//            }
+
+    }
+
     private void initView() {
         tv_count = (TextView) findViewById(R.id.tv_count);
         tv_count.setText(mCurrentNumber + "/" + mMaxNumber);
@@ -94,14 +107,17 @@ public class ImagePickActivity extends BaseActivity {
                     mSelectedList.add(file);
                     mCurrentNumber++;
                     animation.setAlpha ( 1f );
+                    animation.setVisibility ( View.VISIBLE );
 
+                    AnimationDrawable animationDrawable = (AnimationDrawable) animation.getBackground ();
                     Animation a= AnimationUtils.loadAnimation ( getApplicationContext (),R.anim.rotate_animation );
-                    animation.startAnimation ( a );
+//                    animation.startAnimation ( animationDrawable );
+                    animationDrawable.start ();
                 } else {
                     mSelectedList.remove(file);
                     mCurrentNumber--;
                     animation.setAlpha ( 0f );
-//                    animation.setVisibility ( View.GONE );
+                    animation.setVisibility ( View.GONE );
                 }
                 tv_count.setText(mCurrentNumber + "/" + mMaxNumber);
             }

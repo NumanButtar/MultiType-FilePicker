@@ -1,6 +1,7 @@
 package com.vincent.filepicker.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -95,13 +96,17 @@ public class VideoPickActivity extends BaseActivity {
                     mSelectedList.add(file);
                     mCurrentNumber++;
                     animation.setAlpha ( 1f );
+                    animation.setVisibility ( View.VISIBLE );
 
-                    Animation a= AnimationUtils.loadAnimation ( getApplicationContext (),R.anim.rotate_animation );
-                    animation.startAnimation ( a );
+                    AnimationDrawable animationDrawable = (AnimationDrawable)animation.getBackground ( );
+                    animationDrawable.start ();
+
                 } else {
                     mSelectedList.remove(file);
                     mCurrentNumber--;
                     animation.setAlpha ( 0f );
+                    animation.setVisibility ( View.GONE );
+
                 }
                 tv_count.setText(mCurrentNumber + "/" + mMaxNumber);
             }

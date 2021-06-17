@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.vincent.filepicker.Constant;
 import com.vincent.filepicker.Util;
 import com.vincent.filepicker.activity.AudioPickActivity;
+import com.vincent.filepicker.activity.BaseActivity;
 import com.vincent.filepicker.activity.ImagePickActivity;
 import com.vincent.filepicker.activity.NormalFilePickActivity;
 import com.vincent.filepicker.activity.VideoPickActivity;
@@ -50,27 +51,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent1 = new Intent(this, ImagePickActivity.class);
                 intent1.putExtra(IS_NEED_CAMERA, true);
                 intent1.putExtra(Constant.MAX_NUMBER, 9);
-                intent1.putExtra(IS_NEED_FOLDER_LIST, true);
+                intent1.putExtra ( IS_NEED_FOLDER_LIST, true );
                 startActivityForResult(intent1, Constant.REQUEST_CODE_PICK_IMAGE);
                 break;
             case R.id.btn_pick_video:
                 Intent intent2 = new Intent(this, VideoPickActivity.class);
                 intent2.putExtra(IS_NEED_CAMERA, true);
                 intent2.putExtra(Constant.MAX_NUMBER, 9);
-                intent2.putExtra(IS_NEED_FOLDER_LIST, true);
+                intent2.putExtra ( IS_NEED_FOLDER_LIST, true );
                 startActivityForResult(intent2, Constant.REQUEST_CODE_PICK_VIDEO);
                 break;
             case R.id.btn_pick_audio:
                 Intent intent3 = new Intent(this, AudioPickActivity.class);
                 intent3.putExtra(IS_NEED_RECORDER, true);
                 intent3.putExtra(Constant.MAX_NUMBER, 9);
-                intent3.putExtra(IS_NEED_FOLDER_LIST, true);
+                intent3.putExtra ( IS_NEED_FOLDER_LIST, true );
                 startActivityForResult(intent3, Constant.REQUEST_CODE_PICK_AUDIO);
                 break;
             case R.id.btn_pick_file:
                 Intent intent4 = new Intent(this, NormalFilePickActivity.class);
                 intent4.putExtra(Constant.MAX_NUMBER, 9);
-                intent4.putExtra(IS_NEED_FOLDER_LIST, true);
+                intent4.putExtra ( IS_NEED_FOLDER_LIST, true );
                 intent4.putExtra(NormalFilePickActivity.SUFFIX,
                         new String[] {"xlsx", "xls", "doc", "dOcX", "ppt", ".pptx", "pdf"});
                 startActivityForResult(intent4, Constant.REQUEST_CODE_PICK_FILE);

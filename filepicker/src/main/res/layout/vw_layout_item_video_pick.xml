@@ -54,8 +54,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
-                android:textColor="#FFFFFF"
                 android:text="08:00"
+                android:textColor="#FFFFFF"
                 android:textSize="12sp" />
 
         </RelativeLayout>
@@ -64,14 +64,14 @@
         android:alpha="0"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/square_drawable_animation"
+        android:background="@drawable/animation_drawable"
         android:id="@+id/animationSquarevideo">
         <RelativeLayout
 
             android:layout_alignParentTop="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_circle"
+            android:background="@drawable/animation_drawable"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true">
             <ImageView

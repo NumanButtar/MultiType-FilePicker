@@ -1,6 +1,7 @@
 package com.vincent.filepicker.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -99,10 +100,15 @@ public class AudioPickActivity extends BaseActivity {
                     mSelectedList.add(file);
                     mCurrentNumber++;
                     animation.setAlpha ( 1f );
-                    Animation a = AnimationUtils.loadAnimation ( getApplicationContext (),R.anim.rotate_animation );
-                    animation.startAnimation ( a );
+                    animation.setVisibility ( View.VISIBLE );
+                    AnimationDrawable animationDrawable = (AnimationDrawable)animation.getBackground ();
+                    animationDrawable.start ();
+//                    Animation a = AnimationUtils.loadAnimation ( getApplicationContext (),R.anim.rotate_animation );
+//                    animation.startAnimation ( a );
                 } else {
                     animation.setAlpha ( 0f );
+                    animation.setVisibility ( View.GONE );
+
                     mSelectedList.remove(file);
                     mCurrentNumber--;
                 }
