@@ -100,14 +100,12 @@ public class AudioPickActivity extends BaseActivity {
                     mSelectedList.add(file);
                     mCurrentNumber++;
                     animation.setAlpha ( 1f );
-                    animation.setVisibility ( View.VISIBLE );
                     AnimationDrawable animationDrawable = (AnimationDrawable)animation.getBackground ();
                     animationDrawable.start ();
 //                    Animation a = AnimationUtils.loadAnimation ( getApplicationContext (),R.anim.rotate_animation );
 //                    animation.startAnimation ( a );
                 } else {
                     animation.setAlpha ( 0f );
-                    animation.setVisibility ( View.GONE );
 
                     mSelectedList.remove(file);
                     mCurrentNumber--;

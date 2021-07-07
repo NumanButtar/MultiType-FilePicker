@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
@@ -143,13 +144,17 @@ public class ImagePickAdapter extends BaseAdapter<ImageFile, ImagePickAdapter.Im
 
             if ( file.isSelected ( ) ) {
                 holder.mCbx.setSelected ( true );
+                holder.mShadow.setVisibility ( View.VISIBLE );
                 holder.animation.setVisibility ( View.VISIBLE );
                 holder.animation.setAlpha ( 1f );
-                holder.mShadow.setVisibility ( View.VISIBLE );
+                AnimationDrawable animationDrawable = (AnimationDrawable) holder.animation.getBackground ( );
+                Animation a= AnimationUtils.loadAnimation ( mContext,R.anim.rotate_animation );
+//                    animation.startAnimation ( animationDrawable );
+                animationDrawable.start ();
             }
             else {
                 holder.mCbx.setSelected ( false );
-                holder.animation.setVisibility ( View.INVISIBLE );
+                holder.animation.setVisibility ( View.GONE );
                 holder.animation.setAlpha ( 0f );
                 holder.mShadow.setVisibility ( View.INVISIBLE );
             }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -14,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -129,6 +132,11 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
                 holder.mShadow.setVisibility(View.VISIBLE);
                 holder.animation.setVisibility ( View.VISIBLE );
                 holder.animation.setAlpha ( 1f );
+                AnimationDrawable animationDrawable = (AnimationDrawable) holder.animation.getBackground ( );
+                Animation a= AnimationUtils.loadAnimation ( mContext,R.anim.rotate_animation );
+//                    animation.startAnimation ( animationDrawable );
+                animationDrawable.start ();
+
             } else {
                 holder.mCbx.setSelected(false);
                 holder.mShadow.setVisibility(View.INVISIBLE);
