@@ -43,7 +43,9 @@ public class AudioPickAdapter extends BaseAdapter<AudioFile, AudioPickAdapter.Au
     @Override
     public AudioPickViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.vw_layout_item_audio_pick, parent, false);
-        return new AudioPickViewHolder(itemView);
+        AudioPickViewHolder holder=new AudioPickViewHolder(itemView);
+        holder.setIsRecyclable ( false );
+        return holder;
     }
 
     @Override
@@ -62,8 +64,12 @@ public class AudioPickAdapter extends BaseAdapter<AudioFile, AudioPickAdapter.Au
         holder.mTvDuration.setText(Util.getDurationString(file.getDuration()));
         if (file.isSelected()) {
             holder.mCbx.setSelected(true);
+            holder.animation.setVisibility ( View.VISIBLE );
+            holder.animation.setAlpha ( 1f );
         } else {
             holder.mCbx.setSelected(false);
+            holder.animation.setVisibility ( View.INVISIBLE );
+            holder.animation.setAlpha ( 0f );
         }
         //change itemview to mCbx
         holder.itemView.setOnClickListener(new View.OnClickListener() {
