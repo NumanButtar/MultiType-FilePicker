@@ -154,47 +154,20 @@ public class ImagePickAdapter extends BaseAdapter<ImageFile, ImagePickAdapter.Im
                 holder.mShadow.setVisibility ( View.INVISIBLE );
             }
 
-//            holder.mCbx.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (!v.isSelected() && isUpToMax()) {
-//                        ToastUtil.getInstance(mContext).showToast(R.string.vw_up_to_max);
-//                        return;
+//            if ( isNeedImagePager ) {
+//                holder.itemView.setOnClickListener ( new View.OnClickListener ( ) {
+//                    @Override
+//                    public void onClick ( View v ) {
+//                        Intent intent = new Intent ( mContext , ImageBrowserActivity.class );
+//                        intent.putExtra ( Constant.MAX_NUMBER , mMaxNumber );
+//                        intent.putExtra ( IMAGE_BROWSER_INIT_INDEX ,
+//                                isNeedCamera ? holder.getAdapterPosition ( ) - 1 : holder.getAdapterPosition ( ) );
+//                        intent.putParcelableArrayListExtra ( IMAGE_BROWSER_SELECTED_LIST , ( (ImagePickActivity) mContext ).mSelectedList );
+//                        ( (Activity) mContext ).startActivityForResult ( intent , Constant.REQUEST_CODE_BROWSER_IMAGE );
 //                    }
-//
-//                    int index = isNeedCamera ? holder.getAdapterPosition() - 1 : holder.getAdapterPosition();
-//                    if (v.isSelected()) {
-//                        holder.mShadow.setVisibility(View.INVISIBLE);
-//                        holder.mCbx.setSelected(false);
-//                        mCurrentNumber--;
-//                        mList.get(index).setSelected(false);
-//                    } else {
-//                        holder.mShadow.setVisibility(View.VISIBLE);
-//                        holder.mCbx.setSelected(true);
-//                        mCurrentNumber++;
-//                        mList.get(index).setSelected(true);
-//                    }
-//
-//                    if (mListener != null) {
-//                        mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index),holder.animation);
-//                    }
-//                }
-//            });
-
-            if ( isNeedImagePager ) {
-                holder.itemView.setOnClickListener ( new View.OnClickListener ( ) {
-                    @Override
-                    public void onClick ( View v ) {
-                        Intent intent = new Intent ( mContext , ImageBrowserActivity.class );
-                        intent.putExtra ( Constant.MAX_NUMBER , mMaxNumber );
-                        intent.putExtra ( IMAGE_BROWSER_INIT_INDEX ,
-                                isNeedCamera ? holder.getAdapterPosition ( ) - 1 : holder.getAdapterPosition ( ) );
-                        intent.putParcelableArrayListExtra ( IMAGE_BROWSER_SELECTED_LIST , ( (ImagePickActivity) mContext ).mSelectedList );
-                        ( (Activity) mContext ).startActivityForResult ( intent , Constant.REQUEST_CODE_BROWSER_IMAGE );
-                    }
-                } );
-            }
-            else {
+//                } );
+//            }
+//            else {
                 final int p = holder.getAdapterPosition ( );
 
                 holder.mIvThumbnail.setOnClickListener ( new View.OnClickListener ( ) {
@@ -226,7 +199,6 @@ public class ImagePickAdapter extends BaseAdapter<ImageFile, ImagePickAdapter.Im
 //                                holder.animation.startAnimation ( a );
 
 
-
                         }
 
                         if ( mListener != null ) {
@@ -234,72 +206,8 @@ public class ImagePickAdapter extends BaseAdapter<ImageFile, ImagePickAdapter.Im
                         }
                     }
                 } );
-//                holder.itemView.setOnLongClickListener ( new View.OnLongClickListener ( ) {
-//                    @Override
-//                    public boolean onLongClick ( View view ) {
-//                        if (!holder.mCbx.isSelected() && isUpToMax()) {
-//                            ToastUtil.getInstance(mContext).showToast(R.string.vw_up_to_max);
-//                            return true;
-//                        }
-//
-//                        int index = isNeedCamera ? holder.getAdapterPosition() - 1 : holder.getAdapterPosition();
-//                        Log.d ("123123123123123",index+"" );
-//
-//                        if (holder.mCbx.isSelected()) {
-//                            holder.mShadow.setVisibility(View.INVISIBLE);
-//                            holder.mCbx.setSelected(false);
-//                            mCurrentNumber--;
-//                            mList.get(index).setSelected(false);
-//                        }
-//                        else {
-//                            holder.mShadow.setVisibility(View.VISIBLE);
-//                            holder.mCbx.setSelected(true);
-//                            mCurrentNumber++;
-//                            mList.get(index).setSelected(true);
-//                        }
-//
-//                        if (mListener != null) {
-//                            mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index), holder.animation);
-//                        }
-//                        return false;
-//                    }
-//                } );
-//                holder.itemView.setOnClickListener ( new View.OnClickListener ( ) {
-//                    @Override
-//                    public void onClick ( View view ) {
-//                        if ( !holder.mCbx.isSelected ( ) && isUpToMax ( ) ) {
-//                            ToastUtil.getInstance ( mContext ).showToast ( R.string.vw_up_to_max );
-//                            return;
-//                        }
-//                        int index = isNeedCamera ? holder.getAdapterPosition ( ) - 1 : holder.getAdapterPosition ( );
-//                        Log.d ( "123123123123123" , index + " in animation" );
-//                        if ( holder.mCbx.isSelected ( ) ) {
-//                            holder.animation.setVisibility ( View.INVISIBLE );
-//                            holder.mCbx.setSelected ( false );
-//                            mCurrentNumber--;
-//                            mList.get ( index ).setSelected ( holder.mCbx.isSelected ( ) );
-//                            holder.animation.setAlpha ( 0f );
-//                            Log.d ( "aasdaasdaasd" , index + "" );
-//                        }
-//                        else {
-//                            Log.d ( "023102310231" , index + "" );
-//                            holder.animation.setVisibility ( View.VISIBLE );
-//                            holder.mCbx.setSelected ( true );
-//                            mCurrentNumber++;
-//                            mList.get ( index ).setSelected ( holder.mCbx.isSelected ( ) );
-//                            holder.animation.setAlpha ( 1f );
-//                            final Animation a = AnimationUtils.loadAnimation ( mContext , R.anim.rotate_animation );
-//                            holder.animation.startAnimation ( a );
-//                        }
-//
-//
-//                        if ( mListener != null ) {
-//                            mListener.OnSelectStateChanged ( index , holder.mCbx.isSelected ( ) , mList.get ( index ) , holder.animation );
-//                        }
-//                    }
-//                } );
 
-            }
+//            }
         }
     }
 
