@@ -9,7 +9,7 @@ import android.view.View;
  */
 
 public interface OnSelectStateListener<T> {
-    void OnSelectStateChanged (int position, boolean state, T file, View animation );
+    void OnSelectStateChanged ( boolean state, T file, View animation );
     void onAudioStateChanged(boolean state,T file,View animation);
     void onFileStateChanged(boolean state,T file,View animation);
 }

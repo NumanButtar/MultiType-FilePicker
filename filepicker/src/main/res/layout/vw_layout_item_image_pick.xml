@@ -26,31 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/vw_ShadowItem"
-            android:visibility="gone" />
-        <RelativeLayout
-            android:visibility="invisible"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/square_drawable_animation"
-            android:id="@+id/animationSquare">
-            <RelativeLayout
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_circle"
-                android:layout_alignParentLeft="true"
-
-                >
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_check_circle_24"
-                    />
-            </RelativeLayout>
-
-        </RelativeLayout>
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/cbx"
@@ -60,6 +36,30 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/vw_selector_cbx" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:alpha="0"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/animation_drawable"
+        android:id="@+id/animationSquare">
+        <RelativeLayout
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_circle"
+            android:layout_alignParentLeft="true"
+
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_check_circle_24"
+                />
+        </RelativeLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

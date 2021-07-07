@@ -3,7 +3,7 @@
     android:shape="rectangle"
     android:visible="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<stroke android:color="@color/card_border_color"
+<stroke android:color="@color/border_color"
     android:width="0.5dp"
     />
     <corners android:radius="1dp"/>

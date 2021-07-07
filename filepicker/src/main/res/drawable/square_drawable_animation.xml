@@ -9,5 +9,5 @@
     <corners android:radius="5dp" />
     <stroke
         android:width="2dp"
-        android:color="@color/card_border_color" />
+        android:color="@color/border_color" />
 </shape>
