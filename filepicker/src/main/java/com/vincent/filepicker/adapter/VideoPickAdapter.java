@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -67,7 +68,9 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
             int width = wm.getDefaultDisplay().getWidth();
             params.height = width / VideoPickActivity.COLUMN_NUMBER;
         }
-        return new VideoPickViewHolder(itemView);
+        VideoPickViewHolder holder = new VideoPickViewHolder ( itemView );
+        holder.setIsRecyclable ( false );
+        return holder;
     }
 
     @Override
@@ -78,28 +81,28 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
             holder.mCbx.setVisibility(View.INVISIBLE);
             holder.mShadow.setVisibility(View.INVISIBLE);
             holder.mDurationLayout.setVisibility(View.INVISIBLE);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
-                    File file = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM).getAbsolutePath()
-                            + "/VID_" + timeStamp + ".mp4");
-                    mVideoPath = file.getAbsolutePath();
-
-                    ContentValues contentValues = new ContentValues(1);
-                    contentValues.put(MediaStore.Images.Media.DATA, mVideoPath);
-                    Uri uri = mContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-                    if (Util.detectIntent(mContext, intent)) {
-                        ((Activity) mContext).startActivityForResult(intent, REQUEST_CODE_TAKE_VIDEO);
-                    } else {
-                        ToastUtil.getInstance(mContext).showToast(mContext.getString(R.string.vw_no_video_app));
-                    }
-                }
-            });
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+//                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
+//                    File file = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM).getAbsolutePath()
+//                            + "/VID_" + timeStamp + ".mp4");
+//                    mVideoPath = file.getAbsolutePath();
+//
+//                    ContentValues contentValues = new ContentValues(1);
+//                    contentValues.put(MediaStore.Images.Media.DATA, mVideoPath);
+//                    Uri uri = mContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+//
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+//                    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+//                    if (Util.detectIntent(mContext, intent)) {
+//                        ((Activity) mContext).startActivityForResult(intent, REQUEST_CODE_TAKE_VIDEO);
+//                    } else {
+//                        ToastUtil.getInstance(mContext).showToast(mContext.getString(R.string.vw_no_video_app));
+//                    }
+//                }
+//            });
         } else {
             holder.mIvCamera.setVisibility(View.INVISIBLE);
             holder.mIvThumbnail.setVisibility(View.VISIBLE);
@@ -124,26 +127,60 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
             if (file.isSelected()) {
                 holder.mCbx.setSelected(true);
                 holder.mShadow.setVisibility(View.VISIBLE);
+                holder.animation.setVisibility ( View.VISIBLE );
+                holder.animation.setAlpha ( 1f );
             } else {
                 holder.mCbx.setSelected(false);
                 holder.mShadow.setVisibility(View.INVISIBLE);
+                holder.animation.setVisibility ( View.INVISIBLE );
+                holder.animation.setAlpha ( 0f );
             }
 
-            holder.mCbx.setOnClickListener(new View.OnClickListener() {
+//            holder.mCbx.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (!v.isSelected() && isUpToMax()) {
+//                        ToastUtil.getInstance(mContext).showToast(R.string.vw_up_to_max);
+//                        return;
+//                    }
+//
+//                    if (v.isSelected()) {
+//                        holder.mShadow.setVisibility(View.INVISIBLE);
+//                        holder.mCbx.setSelected(false);
+//                        mCurrentNumber--;
+//                    } else {
+//                        holder.mShadow.setVisibility(View.VISIBLE);
+//                        holder.mCbx.setSelected(true);
+//                        mCurrentNumber++;
+//                    }
+//
+//                    int index = isNeedCamera ? holder.getAdapterPosition() - 1 : holder.getAdapterPosition();
+//                    mList.get(index).setSelected(holder.mCbx.isSelected());
+//
+//                    if (mListener != null) {
+//                        mListener.OnSelectStateChanged(index,holder.mCbx.isSelected(), mList.get(index),holder.animation);
+//                    }
+//                }
+//            });
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!v.isSelected() && isUpToMax()) {
+                    if (!holder.mCbx.isSelected() && isUpToMax()) {
                         ToastUtil.getInstance(mContext).showToast(R.string.vw_up_to_max);
-                        return;
                     }
 
-                    if (v.isSelected()) {
+                    if (holder.mCbx.isSelected()) {
                         holder.mShadow.setVisibility(View.INVISIBLE);
                         holder.mCbx.setSelected(false);
+                        holder.animation.setVisibility ( View.VISIBLE );
+                        holder.animation.setAlpha ( 1f );
                         mCurrentNumber--;
                     } else {
                         holder.mShadow.setVisibility(View.VISIBLE);
                         holder.mCbx.setSelected(true);
+                        holder.animation.setVisibility ( View.INVISIBLE );
+                        holder.animation.setAlpha ( 0f );
                         mCurrentNumber++;
                     }
 
@@ -151,20 +188,21 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
                     mList.get(index).setSelected(holder.mCbx.isSelected());
 
                     if (mListener != null) {
-                        mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index),holder.animation);
+                        mListener.OnSelectStateChanged(index,holder.mCbx.isSelected(), mList.get(index),holder.animation);
                     }
+
                 }
             });
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnLongClickListener ( new View.OnLongClickListener ( ) {
                 @Override
-                public void onClick(View v) {
+                public boolean onLongClick ( View view ) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri uri;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         File f = new File(file.getPath());
                         uri = FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".provider", f);
+
                     }else{
                         uri = Uri.parse("file://" + file.getPath());
                     }
@@ -174,32 +212,7 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
                     } else {
                         ToastUtil.getInstance(mContext).showToast(mContext.getString(R.string.vw_no_video_play_app));
                     }
-                }
-            });
-            holder.itemView.setOnLongClickListener ( new View.OnLongClickListener ( ) {
-                @Override
-                public boolean onLongClick ( View view ) {
-                    if (!holder.mCbx.isSelected() && isUpToMax()) {
-                        ToastUtil.getInstance(mContext).showToast(R.string.vw_up_to_max);
-                        return true;
-                    }
 
-                    if (holder.mCbx.isSelected()) {
-                        holder.mShadow.setVisibility(View.INVISIBLE);
-                        holder.mCbx.setSelected(false);
-                        mCurrentNumber--;
-                    } else {
-                        holder.mShadow.setVisibility(View.VISIBLE);
-                        holder.mCbx.setSelected(true);
-                        mCurrentNumber++;
-                    }
-
-                    int index = isNeedCamera ? holder.getAdapterPosition() - 1 : holder.getAdapterPosition();
-                    mList.get(index).setSelected(holder.mCbx.isSelected());
-
-                    if (mListener != null) {
-                        mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index),holder.animation);
-                    }
                     return false;
                 }
             } );
@@ -225,7 +238,7 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
                     mList.get(index).setSelected(holder.mCbx.isSelected());
 
                     if (mListener != null) {
-                        mListener.OnSelectStateChanged(holder.mCbx.isSelected(), mList.get(index),holder.animation);
+                        mListener.OnSelectStateChanged(index,holder.mCbx.isSelected(), mList.get(index),holder.animation);
                     }
                 }
             } );

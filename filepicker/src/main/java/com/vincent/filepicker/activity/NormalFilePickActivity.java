@@ -1,7 +1,6 @@
 package com.vincent.filepicker.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -86,7 +85,7 @@ public class NormalFilePickActivity extends BaseActivity {
 
         mAdapter.setOnSelectStateListener(new OnSelectStateListener<NormalFile>() {
             @Override
-            public void OnSelectStateChanged ( boolean state , NormalFile file , View animation ) {
+            public void OnSelectStateChanged (int position, boolean state , NormalFile file , View animation ) {
 
             }
 
@@ -101,17 +100,12 @@ public class NormalFilePickActivity extends BaseActivity {
                     mSelectedList.add(file);
                     mCurrentNumber++;
                     animation.setAlpha ( 1f );
-                    animation.setVisibility ( View.VISIBLE );
-
-                    AnimationDrawable animationDrawable = (AnimationDrawable)animation.getBackground ( );
-                    animationDrawable.start ();
-
+                    Animation a = AnimationUtils.loadAnimation ( getApplicationContext (),R.anim.rotate_animation );
+                    animation.startAnimation ( a );
                 } else {
                     mSelectedList.remove(file);
                     mCurrentNumber--;
                     animation.setAlpha ( 0f );
-                    animation.setVisibility ( View.GONE );
-
                 }
                 tv_count.setText(mCurrentNumber + "/" + mMaxNumber);
             }

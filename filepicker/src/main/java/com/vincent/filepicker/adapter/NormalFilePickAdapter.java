@@ -38,7 +38,9 @@ public class NormalFilePickAdapter extends BaseAdapter<NormalFile, NormalFilePic
     @Override
     public NormalFilePickViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.vw_layout_item_normal_file_pick, parent, false);
-        return new NormalFilePickViewHolder(itemView);
+        NormalFilePickViewHolder holder = new NormalFilePickViewHolder ( itemView );
+        holder.setIsRecyclable ( false );
+        return holder;
     }
 
     @Override
@@ -56,8 +58,12 @@ public class NormalFilePickAdapter extends BaseAdapter<NormalFile, NormalFilePic
 
         if (file.isSelected()) {
             holder.mCbx.setSelected(true);
+            holder.animation.setVisibility ( View.VISIBLE );
+            holder.animation.setAlpha ( 1f );
         } else {
             holder.mCbx.setSelected(false);
+            holder.animation.setVisibility ( View.INVISIBLE );
+            holder.animation.setAlpha ( 0f );
         }
 
         if (file.getPath().endsWith("xls") || file.getPath().endsWith("xlsx")) {

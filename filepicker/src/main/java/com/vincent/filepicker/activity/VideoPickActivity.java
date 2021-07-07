@@ -1,7 +1,6 @@
 package com.vincent.filepicker.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -72,7 +71,7 @@ public class VideoPickActivity extends BaseActivity {
 
         mMaxNumber = getIntent().getIntExtra(Constant.MAX_NUMBER, DEFAULT_MAX_NUMBER);
         isNeedCamera = getIntent().getBooleanExtra(IS_NEED_CAMERA, false);
-        isTakenAutoSelected = getIntent().getBooleanExtra(IS_TAKEN_AUTO_SELECTED, true);
+        isTakenAutoSelected = getIntent().getBooleanExtra(IS_TAKEN_AUTO_SELECTED, false);
         initView();
     }
 
@@ -91,22 +90,18 @@ public class VideoPickActivity extends BaseActivity {
         mAdapter.setOnSelectStateListener (new OnSelectStateListener<VideoFile>() {
 
             @Override
-            public void OnSelectStateChanged ( boolean state , VideoFile file , View animation ) {
+            public void OnSelectStateChanged (int position, boolean state , VideoFile file , View animation ) {
                 if (state) {
                     mSelectedList.add(file);
                     mCurrentNumber++;
                     animation.setAlpha ( 1f );
-                    animation.setVisibility ( View.VISIBLE );
 
-                    AnimationDrawable animationDrawable = (AnimationDrawable)animation.getBackground ( );
-                    animationDrawable.start ();
-
+                    Animation a= AnimationUtils.loadAnimation ( getApplicationContext (),R.anim.rotate_animation );
+                    animation.startAnimation ( a );
                 } else {
                     mSelectedList.remove(file);
                     mCurrentNumber--;
                     animation.setAlpha ( 0f );
-                    animation.setVisibility ( View.GONE );
-
                 }
                 tv_count.setText(mCurrentNumber + "/" + mMaxNumber);
             }
