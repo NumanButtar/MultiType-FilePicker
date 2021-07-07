@@ -102,7 +102,7 @@ public class ImagePickActivity extends BaseActivity {
 
 
             @Override
-            public void OnSelectStateChanged ( boolean state , ImageFile file , View animation ) {
+            public void OnSelectStateChanged (int position, boolean state , ImageFile file , View animation ) {
                 if (state) {
                     mSelectedList.add(file);
                     mCurrentNumber++;

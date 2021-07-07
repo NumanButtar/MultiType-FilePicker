@@ -91,7 +91,7 @@ public class VideoPickActivity extends BaseActivity {
         mAdapter.setOnSelectStateListener (new OnSelectStateListener<VideoFile>() {
 
             @Override
-            public void OnSelectStateChanged ( boolean state , VideoFile file , View animation ) {
+            public void OnSelectStateChanged (int position, boolean state , VideoFile file , View animation ) {
                 if (state) {
                     mSelectedList.add(file);
                     mCurrentNumber++;

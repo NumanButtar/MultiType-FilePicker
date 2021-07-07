@@ -90,7 +90,7 @@ public class AudioPickActivity extends BaseActivity {
 
         mAdapter.setOnSelectStateListener(new OnSelectStateListener<AudioFile>() {
             @Override
-            public void OnSelectStateChanged ( boolean state , AudioFile file , View animation ) {
+            public void OnSelectStateChanged (int position, boolean state , AudioFile file , View animation ) {
 
             }
 

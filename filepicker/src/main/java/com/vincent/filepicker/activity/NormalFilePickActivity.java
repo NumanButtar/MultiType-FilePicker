@@ -86,7 +86,7 @@ public class NormalFilePickActivity extends BaseActivity {
 
         mAdapter.setOnSelectStateListener(new OnSelectStateListener<NormalFile>() {
             @Override
-            public void OnSelectStateChanged ( boolean state , NormalFile file , View animation ) {
+            public void OnSelectStateChanged (int position, boolean state , NormalFile file , View animation ) {
 
             }
 
